@@ -36,7 +36,7 @@ public class DecisionTreeGame {
         return answer.equals("yes");
     }
 
-    private String play(BinaryTreeNode node) {
+    private String playRecursive(BinaryTreeNode node) {
         if (node.left == null && node.right == null) {
             // Leaf node, reached the end of the tree
             return node.data;
@@ -45,19 +45,18 @@ public class DecisionTreeGame {
         // Ask a question
         boolean answer = askYesNoQuestion(node.data);
 
-        // Traverse the tree based on the player's answer
-        if (answer) {
-            return play(node.left);
-        } else {
-            return play(node.right);
-        }
+        // Choose the next node based on the answer
+        BinaryTreeNode nextNode = (answer) ? node.left : node.right;
+
+        // Recursively call play with the next node
+        return playRecursive(nextNode);
     }
 
     public void startGame() {
         System.out.println("Welcome to the Decision Tree Game!");
         System.out.println("Think of an object and answer the questions.");
 
-        String result = play(root);
+        String result = playRecursive(root);
 
         System.out.println("I guess it's " + result + "!");
     }
