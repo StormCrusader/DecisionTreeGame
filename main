@@ -1,0 +1,69 @@
+import java.util.Scanner;
+
+class BinaryTreeNode {
+    String data;
+    BinaryTreeNode left, right;
+
+    public BinaryTreeNode(String data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+public class DecisionTreeGame {
+    private BinaryTreeNode root;
+    private Scanner scanner;
+
+    public DecisionTreeGame() {
+        // Initialize the decision tree with a root node
+        root = new BinaryTreeNode("Is it a living thing?");
+        root.left = new BinaryTreeNode("Does it have fur?");
+        root.right = new BinaryTreeNode("Does it have wheels?");
+
+        root.left.left = new BinaryTreeNode("Is it a mammal?");
+        root.left.right = new BinaryTreeNode("Is it a reptile?");
+
+        root.right.left = new BinaryTreeNode("Is it a vehicle?");
+        root.right.right = new BinaryTreeNode("Is it a tool?");
+
+        scanner = new Scanner(System.in);
+    }
+
+    private boolean askYesNoQuestion(String question) {
+        System.out.print(question + " (yes/no): ");
+        String answer = scanner.nextLine().toLowerCase();
+        return answer.equals("yes");
+    }
+
+    private String play(BinaryTreeNode node) {
+        if (node.left == null && node.right == null) {
+            // Leaf node, reached the end of the tree
+            return node.data;
+        }
+
+        // Ask a question
+        boolean answer = askYesNoQuestion(node.data);
+
+        // Traverse the tree based on the player's answer
+        if (answer) {
+            return play(node.left);
+        } else {
+            return play(node.right);
+        }
+    }
+
+    public void startGame() {
+        System.out.println("Welcome to the Decision Tree Game!");
+        System.out.println("Think of an object and answer the questions.");
+
+        String result = play(root);
+
+        System.out.println("I guess it's " + result + "!");
+    }
+
+    public static void main(String[] args) {
+        DecisionTreeGame game = new DecisionTreeGame();
+        game.startGame();
+    }
+}
